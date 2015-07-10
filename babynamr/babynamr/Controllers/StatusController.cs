@@ -56,7 +56,7 @@ namespace babynamr.Controllers
                 return new HttpResponseMessage()
                 {
                     StatusCode = HttpStatusCode.BadRequest,
-                    ReasonPhrase = "Likely unable to connect to Azure Search service."
+                    ReasonPhrase = String.Format("Likely unable to connect to Azure Search service. SearchServiceName: {0}, SearchServiceKey: {1}", ConfigurationManager.AppSettings["SearchServiceName"], ConfigurationManager.AppSettings["SearchServiceApiKey"])
                 };
             }
 
