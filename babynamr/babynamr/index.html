@@ -9,7 +9,26 @@
 
     <link href="app.css" rel="stylesheet" />
 
+    <script src="Scripts/jquery-1.9.1.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+
     <script>
+        var statusUri = 'api/status/Get';
+
+        $(document).ready(function () {
+            $.getJSON(statusUri)
+            .done(function (data) {
+                if (data == false) {
+                    $('#statusBox').html("No names found. Search index not okay. :(");
+                }
+                else {
+                    $('#statusBox').html(data);
+                }
+
+            })
+            .error(function (jqXHR, textStatus, errorThrown) { $('#statusBox').html(errorThrown); })
+        });
+
         function search(name) {
             $('#searchresults').html('<h3>No results found for: ' + name + '</h3>');
         }
@@ -26,6 +45,15 @@
             </div>
         </div>
     </header>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12" id="statusBox">
+
+                </div>
+            </div>
+        </div>
+    </section>
     <section class="search-section">
         <div class="container">
             <div class="row">
@@ -54,11 +82,15 @@
 
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12" id="searchresults">
+
+                </div>
+            </div>
         </div>
     </section>
     <!-- These javascript files should be at the end for performance, I guess. -->
-    <script src="Scripts/jquery-1.9.1.min.js"></script>
-    <script src="Scripts/bootstrap.min.js"></script>
+
 
 </body>
 
