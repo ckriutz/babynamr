@@ -13,20 +13,21 @@
     <script src="Scripts/bootstrap.min.js"></script>
 
     <script>
+        var showStats = true;
         var statusUri = 'api/status/Get';
 
         $(document).ready(function () {
-            $.getJSON(statusUri)
-            .done(function (data) {
-                if (data == false) {
-                    $('#statusBox').html("No names found. Search index not okay. :(");
-                }
-                else {
-                    $('#statusBox').html(data);
-                }
-
-            })
-            .error(function (jqXHR, textStatus, errorThrown) { $('#statusBox').html(errorThrown); })
+            if (showStats) {
+                $.getJSON(statusUri)
+                .done(function (data) {
+                    $('#statusBox').html("<h5>Status: " + data.StatusCode + " | # of items: " + data.DocumentCount + " | Storage Size: " + data.StorageSize + "</h5>");
+                    $('#statusBox').addClass("alert alert-success");
+                })
+                .error(function (jqXHR, textStatus, errorThrown) {
+                    $('#statusBox').html(errorThrown);
+                    $('#statusBox').addClass("alert alert-danger");
+                });
+            }
         });
 
         function search(name) {
@@ -45,15 +46,7 @@
             </div>
         </div>
     </header>
-    <section>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12" id="statusBox">
 
-                </div>
-            </div>
-        </div>
-    </section>
     <section class="search-section">
         <div class="container">
             <div class="row">
@@ -89,7 +82,15 @@
             </div>
         </div>
     </section>
-    <!-- These javascript files should be at the end for performance, I guess. -->
+    <section class="status-section">
+        <div class="container" id="statusContainer">
+            <div class="row">
+                <div class="col-md-4">&nbsp;</div>
+                <div class="col-md-4" id="statusBox"></div>
+                <div class="col-md-4">&nbsp;</div>
+            </div>
+        </div>
+    </section>
 
 
 </body>

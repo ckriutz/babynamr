@@ -27,8 +27,6 @@ namespace babynamr.Controllers
 
         public HttpResponseMessage Get()
         {
-            //TODO: Create some sort of type that will give me better information.
-            
             // If we can't even connect to the search service, this will throw an exception.
             try
             {
@@ -37,12 +35,8 @@ namespace babynamr.Controllers
                 if (indexExists)
                 {
                     var stats = _searchClient.Indexes.GetStatistics("babynames");
-
-                    return new HttpResponseMessage()
-                    {
-                        StatusCode = stats.StatusCode,
-                        ReasonPhrase = stats.DocumentCount.ToString()
-                    };
+                    HttpResponseMessage response = Request.CreateResponse<Microsoft.Azure.Search.Models.IndexGetStatisticsResponse>(HttpStatusCode.OK, stats);
+                    return response;
                 }
 
                 return new HttpResponseMessage()
@@ -50,13 +44,22 @@ namespace babynamr.Controllers
                     StatusCode = HttpStatusCode.BadRequest,
                     ReasonPhrase = "Index does not exist."
                 };
+                return null;
+            }
+            catch (Hyak.Common.CloudException cloudException)
+            {
+                return new HttpResponseMessage()
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ReasonPhrase = cloudException.Error.Message
+                };
             }
             catch (Exception ex)
             {
                 return new HttpResponseMessage()
                 {
                     StatusCode = HttpStatusCode.BadRequest,
-                    ReasonPhrase = String.Format("Likely unable to connect to Azure Search service. SearchServiceName: {0}, SearchServiceKey: {1}", ConfigurationManager.AppSettings["SearchServiceName"], ConfigurationManager.AppSettings["SearchServiceApiKey"])
+                    ReasonPhrase = String.Format("Likely unable to connect to Azure Search service.")
                 };
             }
 
