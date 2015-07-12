@@ -15,6 +15,7 @@
     <script>
         var showStats = true;
         var statusUri = 'api/status/Get';
+        var searchUri = 'api/babyname/Get';
 
         $(document).ready(function () {
             if (showStats) {
@@ -31,7 +32,21 @@
         });
 
         function search(name) {
-            $('#searchresults').html('<h3>No results found for: ' + name + '</h3>');
+            $.getJSON(searchUri +  '?q=' + name)
+                .done(function (data) {
+                    //alert(data);
+                    $('#resultsFound').html("Results Found: " + data.length);
+                    for (var i = 0; i < data.length; i++) {
+                        $('#dataName').append("<h4>" + data[i].Document.name + "</h4>");
+                        //$('#dataName').html(data[0].Document.name);
+                    }
+
+                    //$('#dataName').html(data[0].Document.name);
+                })
+                .error(function (jqXHR, textStatus, errorThrown) {
+                    //$('#statusBox').html(errorThrown);
+                    //$('#statusBox').addClass("alert alert-danger");
+                });
         }
     </script>
 </head>
@@ -72,12 +87,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12" id="searchresults">
-
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12" id="searchresults">
-
+                    <h4 id="resultsFound"></h4>
+                    <h4 id="dataName"></h4>
                 </div>
             </div>
         </div>
