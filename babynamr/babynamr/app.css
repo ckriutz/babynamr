@@ -22,3 +22,15 @@
 .status-section {
     padding: 40px 0;
 }
+
+.rowgirl {
+    background-color: lightpink;
+    padding: 10px 0;
+    margin: 20px 0;
+}
+
+.rowboy {
+    background-color: lightblue;
+    padding: 10px 0;
+    margin: 20px 0;
+}
