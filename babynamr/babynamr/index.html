@@ -11,53 +11,7 @@
 
     <script src="Scripts/jquery-1.9.1.min.js"></script>
     <script src="Scripts/bootstrap.min.js"></script>
-
-    <script>
-        var showStats = true;
-        var statusUri = 'api/status/Get';
-        var searchUri = 'api/babyname/Get';
-
-        $(document).ready(function () {
-            if (showStats) {
-                $.getJSON(statusUri)
-                .done(function (data) {
-                    $('#statusBox').html("<h5>Status: " + data.StatusCode + " | # of items: " + data.DocumentCount + " | Storage Size: " + data.StorageSize + "</h5>");
-                    $('#statusBox').addClass("alert alert-success");
-                })
-                .error(function (jqXHR, textStatus, errorThrown) {
-                    $('#statusBox').html(errorThrown);
-                    $('#statusBox').addClass("alert alert-danger");
-                });
-            }
-
-            $('#txtSearch').keydown(function (event) {
-                if (event.keyCode == 13) {
-                    search($('#txtSearch').val());
-                    return false;
-                }
-            });
-        });
-
-        function search(name) {
-            $.getJSON(searchUri +  '?q=' + name)
-                .done(function (data) {
-                    $('#dataName').empty();
-                    $('#resultsFound').html("Results Found: " + data.length);
-                    for (var i = 0; i < data.length; i++) {
-                        if (data[i].Document.gender == 'Male') {
-                            $('#dataName').append("<div class='row rowboy'><div class='col-md-12'><h3>" + data[i].Document.name + "<br /><small>" + data[i].Document.orgin + "<br>"+data[i].Document.gender+"</br></small></h3>" + data[i].Document.meaning + "</div></div>");
-                        }
-                        if (data[i].Document.gender == 'Female') {
-                            $('#dataName').append("<div class='row rowgirl'><div class='col-md-12'><h3>" + data[i].Document.name + "<br /><small>" + data[i].Document.orgin + "<br>" + data[i].Document.gender + "</br></small></h3>" + data[i].Document.meaning + "</div></div>");
-                        }
-                    }
-                })
-                .error(function (jqXHR, textStatus, errorThrown) {
-                    //$('#statusBox').html(errorThrown);
-                    //$('#statusBox').addClass("alert alert-danger");
-                });
-        }
-    </script>
+    <script src="app.js"></script>
 </head>
 <body>
     <header class="jumbotron" role="banner">
@@ -89,7 +43,7 @@
                     </form>
                 </div>
                 <div class="col-md-3"></div>
-                </div>
+            </div>
         </div>
     </section>
     <section class="results-section">
@@ -99,7 +53,7 @@
                     <h4 id="resultsFound"></h4>
                     <div id="dataName"></div>
                 </div>
-</div>
+            </div>
         </div>
     </section>
     <section class="status-section">
