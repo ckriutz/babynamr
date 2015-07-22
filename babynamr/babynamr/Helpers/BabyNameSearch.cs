@@ -1,19 +1,14 @@
 ﻿using Microsoft.Azure.Search;
 using Microsoft.Azure.Search.Models;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Web;
 
 namespace babynamr.Helpers
 {
     public class BabyNameSearch
     {
-        private static SearchServiceClient _searchClient;
-        private static SearchIndexClient _indexClient;
-
-        public static string errorMessage;
+        private static readonly SearchIndexClient IndexClient;
+        public static string ErrorMessage;
 
         static BabyNameSearch()
         {
@@ -23,12 +18,12 @@ namespace babynamr.Helpers
                 string apiKey = ConfigurationManager.AppSettings["SearchServiceApiKey"];
 
                 // Create an HTTP reference to the catalog index
-                _searchClient = new SearchServiceClient(searchServiceName, new SearchCredentials(apiKey));
-                _indexClient = _searchClient.Indexes.GetClient("babynames");
+                var searchClient = new SearchServiceClient(searchServiceName, new SearchCredentials(apiKey));
+                IndexClient = searchClient.Indexes.GetClient("babynames");
             }
             catch (Exception e)
             {
-                errorMessage = e.Message.ToString();
+                ErrorMessage = e.Message;
             }
         }
 
@@ -37,12 +32,12 @@ namespace babynamr.Helpers
             // Execute search based on query string
             try
             {
-                SearchParameters sp = new SearchParameters() { SearchMode = SearchMode.All };
-                return _indexClient.Documents.Search(searchText, sp);
+                var sp = new SearchParameters() { SearchMode = SearchMode.All };
+                return IndexClient.Documents.Search(searchText, sp);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error querying index: {0}\r\n", ex.Message.ToString());
+                Console.WriteLine("Error querying index: {0}\r\n", ex.Message);
             }
             return null;
         }

@@ -1,9 +1,7 @@
 ﻿using Microsoft.Azure.Search;
 using Microsoft.Azure.Search.Models;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -17,8 +15,7 @@ namespace babynamr.Controllers
     public class StatusController : ApiController
     {
         private static SearchServiceClient _searchClient;
-        private static SearchIndexClient _indexClient;
-        private const string indexName = "babynames";
+        private const string IndexName = "babynames";
 
         StatusController()
         {
@@ -36,7 +33,7 @@ namespace babynamr.Controllers
             // If we can't even connect to the search service, this will throw an exception.
             try
             {
-                var indexExists = _searchClient.Indexes.Exists(indexName);
+                var indexExists = _searchClient.Indexes.Exists(IndexName);
 
                 if (!indexExists) // Well, there is no index. Let's create one with our handy-dandy method!
                 {
@@ -45,13 +42,13 @@ namespace babynamr.Controllers
                 }
 
                 // Now that we are sure we have an index...
-                var stats = _searchClient.Indexes.GetStatistics(indexName);
+                var stats = _searchClient.Indexes.GetStatistics(IndexName);
 
                 if (stats.DocumentCount == 0)
                 {
                     // There are no baby names. :( lets add some in!
                     AddSomeDocuments();
-                    stats = _searchClient.Indexes.GetStatistics(indexName);
+                    stats = _searchClient.Indexes.GetStatistics(IndexName);
                 }
 
                 HttpResponseMessage response = Request.CreateResponse<Microsoft.Azure.Search.Models.IndexGetStatisticsResponse>(HttpStatusCode.OK, stats);
@@ -85,7 +82,7 @@ namespace babynamr.Controllers
             {
                 var definition = new Index()
                 {
-                    Name = indexName,
+                    Name = IndexName,
                     Fields = new[]
                     {
                         new Field("id", DataType.String) { IsKey = true,  IsSearchable = false, IsFilterable = false, IsSortable = false, IsFacetable = false, IsRetrievable = true},
@@ -109,8 +106,8 @@ namespace babynamr.Controllers
         private static void AddSomeDocuments()
         {
             // This will put a bunch of JSON documents (names!) into the search.
-            HttpClient _httpClient = new HttpClient();
-            _httpClient.DefaultRequestHeaders.Add("api-key", ConfigurationManager.AppSettings["SearchServiceApiKey"]);
+            var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Add("api-key", ConfigurationManager.AppSettings["SearchServiceApiKey"]);
 
             // I really don't like how this works but whatever. It works.
             // TODO: Make something better.
@@ -158,7 +155,7 @@ namespace babynamr.Controllers
                 },
             };
 
-            var response = _httpClient.PostAsync("https://" + ConfigurationManager.AppSettings["SearchServiceName"] + ".search.windows.net/indexes/" + indexName + "/docs/index?api-version=2014-10-20-Preview", new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(batch), System.Text.Encoding.Unicode, "application/json")).Result;
+            var response = httpClient.PostAsync("https://" + ConfigurationManager.AppSettings["SearchServiceName"] + ".search.windows.net/indexes/" + IndexName + "/docs/index?api-version=2014-10-20-Preview", new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(batch), System.Text.Encoding.Unicode, "application/json")).Result;
             response.EnsureSuccessStatusCode();
 
 
