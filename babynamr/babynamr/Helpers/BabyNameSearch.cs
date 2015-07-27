@@ -32,12 +32,29 @@ namespace babynamr.Helpers
             // Execute search based on query string
             try
             {
-                var sp = new SearchParameters() { SearchMode = SearchMode.All };
+                var sp = new SearchParameters() { SearchMode = SearchMode.All};
                 return IndexClient.Documents.Search(searchText, sp);
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Error querying index: {0}\r\n", ex.Message);
+            }
+            return null;
+        }
+
+        public DocumentSearchResponse Search(string searchText, string gender)
+        {
+            // Execute search based on query string
+            try
+            {
+                var sp = new SearchParameters() { SearchMode = SearchMode.All, Filter = String.Format("gender eq '{0}' or gender eq 'Both'", gender) };
+                return IndexClient.Documents.Search(searchText, sp);
+            }
+            catch (Exception ex)
+            {
+                // Yeah, we need to log this somehow...
+                //Console.WriteLine("Error querying index: {0}\r\n", ex.Message);
+                
             }
             return null;
         }

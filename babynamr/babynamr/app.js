@@ -30,7 +30,22 @@ $(document).ready(function () {
 
 // This is the big search WebApi call. At this point all we do is pass in the search terms to the search API, and then sort them by name.
 function search(name) {
-    $.getJSON(searchUri + '?q=' + name)
+    var isBoyChecked = $('#chkBoys').is(':checked');
+    var isGirlChecked = $('#chkGirls').is(':checked');
+
+    var query = searchUri + '?q=' + name;
+
+    if (isBoyChecked && isGirlChecked) {
+        query = searchUri + '?q=' + name;
+    }
+    if (isBoyChecked == true && isGirlChecked == false) {
+        query = searchUri + '?q=' + name + "&gender=Male";
+    }
+    if (isBoyChecked == false && isGirlChecked == true) {
+        query = searchUri + '?q=' + name + "&gender=Female";
+    }
+
+    $.getJSON(query)
         .done(function (data) {
             $('#dataName').empty();
             $('#resultsFound').html("Results Found: " + data.length);

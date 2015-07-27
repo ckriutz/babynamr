@@ -17,6 +17,19 @@ namespace babynamr.Controllers
 
             return results;
         }
+
+        public dynamic Get(string gender, string q = "" )
+        {
+            // If blank search, assume they want to search everything
+            if (string.IsNullOrWhiteSpace(q))
+            {
+                q = "*";
+            }
+
+            var results = _babyNameSearch.Search(q, gender);
+
+            return results;
+        }
         
     }
 }
