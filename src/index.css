@@ -1,0 +1,42 @@
+body {
+    background-color: #95A5A6;
+    padding-top:40px;
+    text-align: center;
+    font-family: 'Mukta', sans-serif;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.ml4 {
+    font-weight: 900;
+    font-size: 4.5em;
+    position: relative;
+}
+
+.ml4 .letters {
+    position: absolute;
+    margin: auto;
+    left: 0;
+    top: 0.3em;
+    right: 0;
+    opacity: 0; 
+}
+
+.orgin {
+    font-size: 1.25em;
+    position: relative;
+    top: 5.5em;
+}
+
+.meaning {
+    font-size: 2em;
+    position: relative;
+    top: 4em;
+}
+
+#btnAgain {
+    position: relative;
+    top: 9em;
+    visibility: hidden;
+}
+
