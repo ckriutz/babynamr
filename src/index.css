@@ -39,15 +39,35 @@ body {
     visibility: hidden;
 }
 
+footer {
+    border-top: solid 1px;
+    background: rgba(150, 150, 150, 0.5);
+    width: 100%;
+    height: 40px;
+    padding-top: 10px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+  }
+
 /* For Mobile Phones Portrait or Landscape View */
 @media screen and (max-device-width: 640px) {
+    body {
+        background-color: #95A5A6;
+        padding-top:40px;
+        text-align: center;
+        font-family: 'Mukta', sans-serif;
+        overflow-x: hidden;
+    }
+    
     .title {
-      font-size: 10.0vw;
+      font-size: 14.0vw;
     }
 
     .ml4 {
         font-weight: 900;
-        font-size: 7vw;
+        font-size: 12vw;
         position: relative;
     }
     
@@ -61,15 +81,15 @@ body {
     }
     
     .orgin {
-        font-size: 1.25em;
+        font-size: 8.5vw;
         position: relative;
-        top: 5.5em;
+        top: 2em;
     }
 
     .meaning {
-        font-size: 3vw;
+        font-size: 10vw;
         position: relative;
-        top: 4em;
+        top: 2em;
     }
 
   }
