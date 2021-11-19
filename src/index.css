@@ -3,7 +3,6 @@ body {
     padding-top:40px;
     text-align: center;
     font-family: 'Mukta', sans-serif;
-    width: 100%;
     overflow-x: hidden;
 }
 
@@ -40,3 +39,37 @@ body {
     visibility: hidden;
 }
 
+/* For Mobile Phones Portrait or Landscape View */
+@media screen and (max-device-width: 640px) {
+    .title {
+      font-size: 10.0vw;
+    }
+
+    .ml4 {
+        font-weight: 900;
+        font-size: 7vw;
+        position: relative;
+    }
+    
+    .ml4 .letters {
+        position: absolute;
+        margin: auto;
+        left: 0;
+        top: 0.3em;
+        right: 0;
+        opacity: 0; 
+    }
+    
+    .orgin {
+        font-size: 1.25em;
+        position: relative;
+        top: 5.5em;
+    }
+
+    .meaning {
+        font-size: 3vw;
+        position: relative;
+        top: 4em;
+    }
+
+  }
