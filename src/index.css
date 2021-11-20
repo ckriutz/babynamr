@@ -1,5 +1,5 @@
 body {
-    background-color: #95A5A6;
+    background-color: #ECF0F1;
     padding-top:40px;
     text-align: center;
     font-family: 'Mukta', sans-serif;
@@ -54,7 +54,7 @@ footer {
 /* For Mobile Phones Portrait or Landscape View */
 @media screen and (max-device-width: 640px) {
     body {
-        background-color: #95A5A6;
+        background-color: #ECF0F1;
         padding-top:40px;
         text-align: center;
         font-family: 'Mukta', sans-serif;
