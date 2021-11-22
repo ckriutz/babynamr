@@ -10,18 +10,84 @@ var nameOrgin = "";
 var nameGender = "";
 
 async function getNames() {
-    const names = await( await fetch('/api/names')).json();
-    console.log(names)
-    
-    // Here is where we will get teh names from the API to display.
-    name1.innerHTML = names[0].name;
-    name2.innerHTML = names[1].name;
-    name3.innerHTML = names[2].name;
+    await fetch('/api/names')
+    .then(response => response.json())
+    .then(
+        anime.timeline({loop: false})
+        .add({
+            targets: '.ml4 .letters-3',
+            opacity: 0,
+            scale: 3,
+            duration: 200,
+            easing: "easeInExpo",
+            delay: 10
+        })
+    )
+    .then(data => { 
+        console.log(data)
+        name1.innerHTML = data[0].name;
+        name2.innerHTML = data[1].name;
+        name3.innerHTML = data[2].name;
 
-    // The orgin and meaning also...
-    nameMeaning = names[2].meaning;
-    nameOrgin = names[2].orgin;
-    nameGender = names[2].gender;
+        nameMeaning = data[2].meaning;
+        nameOrgin = data[2].orgin;
+        nameGender = data[2].gender;
+    })
+    .then(data => {
+        var ml4 = {};
+        ml4.opacityIn = [0,1];
+        ml4.scaleIn = [0.2, 1];
+        ml4.scaleOut = 3;
+        ml4.durationIn = 200;
+        ml4.durationOut = 200;
+        ml4.delay = 10;
+
+        anime.timeline({loop: false})
+        .add({
+            targets: '.ml4 .letters-3',
+            opacity: 0,
+            scale: ml4.scaleOut,
+            duration: ml4.durationOut,
+            easing: "easeInExpo",
+            delay: ml4.delay
+        }).add({
+            targets: '.ml4 .letters-1',
+            opacity: ml4.opacityIn,
+            scale: ml4.scaleIn,
+            duration: ml4.durationIn
+        }).add({
+            targets: '.ml4 .letters-1',
+            opacity: 0,
+            scale: ml4.scaleOut,
+            duration: ml4.durationOut,
+            easing: "easeInExpo",
+            delay: ml4.delay
+        }).add({
+            targets: '.ml4 .letters-2',
+            opacity: ml4.opacityIn,
+            scale: ml4.scaleIn,
+            duration: ml4.durationIn
+        }).add({
+            targets: '.ml4 .letters-2',
+            opacity: 0,
+            scale: ml4.scaleOut,
+            duration: ml4.durationOut,
+            easing: "easeInExpo",
+            delay: ml4.delay
+        }).add({
+            targets: '.ml4 .letters-3',
+            opacity: ml4.opacityIn,
+            scale: ml4.scaleIn,
+            duration: ml4.durationIn,
+            complete: function() {
+                meaning.innerHTML= nameMeaning
+                orgin.innerHTML= nameOrgin
+                document.getElementById("btnAgain").style.visibility = "visible";
+
+                changeNameColor(nameGender);
+            }
+        });
+    });
 }
 
 const again = function() {
@@ -34,8 +100,6 @@ const again = function() {
     // Get New Names
     getNames();
 
-    // Do the thing.
-    spin();
 }
 
 const changeNameColor = function(gender) {
@@ -109,50 +173,3 @@ const spin = function() {
 }
 
 getNames();
-var ml4 = {};
-ml4.opacityIn = [0,1];
-ml4.scaleIn = [0.2, 1];
-ml4.scaleOut = 3;
-ml4.durationIn = 200;
-ml4.durationOut = 200;
-ml4.delay = 10;
-
-anime.timeline({loop: false})
-  .add({
-    targets: '.ml4 .letters-1',
-    opacity: ml4.opacityIn,
-    scale: ml4.scaleIn,
-    duration: ml4.durationIn
-  }).add({
-    targets: '.ml4 .letters-1',
-    opacity: 0,
-    scale: ml4.scaleOut,
-    duration: ml4.durationOut,
-    easing: "easeInExpo",
-    delay: ml4.delay
-  }).add({
-    targets: '.ml4 .letters-2',
-    opacity: ml4.opacityIn,
-    scale: ml4.scaleIn,
-    duration: ml4.durationIn
-  }).add({
-    targets: '.ml4 .letters-2',
-    opacity: 0,
-    scale: ml4.scaleOut,
-    duration: ml4.durationOut,
-    easing: "easeInExpo",
-    delay: ml4.delay
-  }).add({
-    targets: '.ml4 .letters-3',
-    opacity: ml4.opacityIn,
-    scale: ml4.scaleIn,
-    duration: ml4.durationIn,
-    complete: function() {
-        // Fill in the data.
-        meaning.innerHTML = nameMeaning;
-        orgin.innerHTML= nameOrgin;
-        document.getElementById("btnAgain").style.visibility = "visible";
-
-        changeNameColor(nameGender);
-    }
-  });
